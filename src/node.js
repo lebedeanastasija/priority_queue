@@ -8,14 +8,16 @@ class Node {
 	}
 
 	appendChild(node) {
-		if(this.left == null){
-			this.left = node;
-			node.parent = this;
-		}
-		else{ 
-			if (this.right == null){
-				this.right = node;
+		if(node != null){
+			if(this.left == null){
+				this.left = node;
 				node.parent = this;
+			}
+			else{ 
+				if (this.right == null){
+					this.right = node;
+					node.parent = this;
+				}
 			}
 		}
 	}
@@ -45,20 +47,38 @@ class Node {
 	swapWithParent() {
 		if(this.parent != null) {
 			var parent  = this.parent;
-            this.remove();
-            var secondParentChild =  parent.rigth;
+			var leftChild = false;
 
-            if(secondParentChild != null){
-            	secondParentChild.remove();
-            	this.appendChild(secondParentChild)
-            }
+			if(parent.left == this)
+				leftChild = true;
+
+			var secondParentChild;
+
+			if(leftChild)
+				secondParentChild = parent.right;
+			else
+				secondParentChild = parent.left;
+
+            this.remove();       
 
             if(parent.parent != null) {
 				var parentOfParent = parent.parent;
                 parent.remove();
                 parentOfParent.appendChild(this);
 			}
-			this.appendChild(parent);
+
+            if(secondParentChild != null){
+            	secondParentChild.remove();            	
+            }
+
+            if(leftChild){
+				this.appendChild(parent);
+				this.appendChild(secondParentChild);
+			}
+			else {
+				this.appendChild(secondParentChild);
+				this.appendChild(parent);
+			}
 		}
 	}
 }
