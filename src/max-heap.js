@@ -7,18 +7,20 @@ class MaxHeap {
 	}
 
 	insertNode(node) {
-		if(this.isEmpty() == true) {
-			this.root = node;
-			this.parentNodes.push(node);
-		}
-		else {
-			var parentToAppend = this.parentNodes[0];
-			parentToAppend.appendChild(node);
+		if(node.priority != undefined) {
+			if(this.isEmpty() == true) {
+				this.root = node;
+				this.parentNodes.push(node);
+			}
+			else {
+				var parentToAppend = this.parentNodes[0];
+				parentToAppend.appendChild(node);
 
-			if(parentToAppend.right != null) {
-				this.parentNodes.shift();
-			}				
-			this.parentNodes.push(node);
+				if(parentToAppend.right != null) {
+					this.parentNodes.shift();
+				}				
+				this.parentNodes.push(node);
+			}
 		}
 	}
 
@@ -49,29 +51,30 @@ class MaxHeap {
 	}
 
 	restoreRootFromLastInsertedNode(detached) {
-		var lastInsertedNode = this.parentNodes[this.size() - 1];
-		lastInsertedNode.remove();
-		this.parentNodes.pop();
-
-		var leftChild = detached.left,
-			rightChild = detached.right;
-
-		this.root = lastInsertedNode;
-
-		if(leftChild != null){
-			leftChild.remove();
+		if(this.isEmpty() == false){
+			var lastInsertedNode = this.parentNodes.pop();
+			lastInsertedNode.remove();
 			
-		}
-		if(rightChild != null){
-			rightChild.remove();			
-		}
-		detached = null;
 
-		lastInsertedNode.appendChild(leftChild);
-		lastInsertedNode.appendChild(rightChild);
+			var leftChild = detached.left,
+				rightChild = detached.right;
 
-        if(leftChild == null || rightChild == null)
-        	this.parentNodes.unshift(this.root);		
+			this.root = lastInsertedNode;
+
+			if(leftChild != null) {
+				leftChild.remove();				
+			}
+			if(rightChild != null){
+				rightChild.remove();			
+			}
+
+			lastInsertedNode.appendChild(leftChild);
+			lastInsertedNode.appendChild(rightChild);
+
+		    if(leftChild == null || rightChild == null) {
+		    	this.parentNodes.unshift(this.root);	
+		    }
+		}
 	}
 
 	size() {
@@ -115,34 +118,38 @@ class MaxHeap {
 	}
 
 	shiftNodeDown(node) {
-		var left = node.left,
-			right = node.rigth;
-
-		if(left != null || right != null) {			
-			var childToSwap;
-
-			if(left != null && right != null)
-				(left.priority > right.priority) ? childToSwap = left : childToSwap = right;
-			else 
-				childToSwap = left;			    
-
-			if(node.priority < childToSwap.priority) {
-				if((childToSwap == left) && (right == null)) {
+		if(node != null) {
+			if (node.right == null){
+				if(node.left != null && node.left.priority > node.priority) {
 					this.parentNodes.shift();
-					this.parentNodes.unshift(childToSwap);
+					this.parentNodes.unshift(node.left);
+					this.pop();
 					this.push(node);
+					node.left.swapWithParent();
+					if(node == this.root)
+						this.root = node.left;
+					this.shiftNodeDown(node);
 				}
-				else {
-					if((childToSwap == left) && (right != null)) {
-						var index = this.parentNodes.indexOf(childToSwap);
-						if( index != -1) {
-							this.parentNodes[index] = node;
-						}
+			}
+			else{
+				var child;
+				if(node.left.priority >= node.right.priority) {
+					if(node.left.priority > node.priority) {
+						child = node.left;
 					}
 				}
-				childToSwap.swapWithParent();
-				if(this.root == node)
-					this.root = childToSwap;
+				else{
+					if(node.right.priority > node.priority) {
+						child = node.right;
+					}
+				}
+				var index = this.parentNodes.indexOf(child);
+				if(index > -1) {
+					this.parentNodes[index] = node;
+				}
+				child.swapWithParent();
+				if(node == this.root)
+					this.root = child;
 				this.shiftNodeDown(node);
 			}
 		}

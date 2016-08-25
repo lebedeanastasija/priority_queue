@@ -103,14 +103,20 @@ class Node {
             if(leftChild){
 				this.appendChild(parent);
 				this.appendChild(secondParentChild);
-				this.left.appendChild(left);
-				this.left.appendChild(right);
+				if(left != null){
+					this.left.appendChild(left);
+					if(right != null) 
+						this.left.appendChild(right);
+				}
 			}
 			else {
 				this.appendChild(secondParentChild);
 				this.appendChild(parent);
-				this.right.appendChild(left);
-				this.right.appendChild(right);
+				if(left != null){
+					this.right.appendChild(left);
+					if(right != null)
+						this.right.appendChild(right);
+				}
 			}
 		}
 	}
