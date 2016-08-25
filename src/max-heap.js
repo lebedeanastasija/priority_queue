@@ -120,14 +120,15 @@ class MaxHeap {
 	shiftNodeDown(node) {
 		if(node != null) {
 			if (node.right == null){
-				if(node.left != null && node.left.priority > node.priority) {
+				if(node.left != null && (node.left.priority > node.priority)) {
+					node.left.swapWithParent();
+					if(node == this.root) {
+						this.root = node.left;
+					}
 					this.parentNodes.shift();
 					this.parentNodes.unshift(node.left);
 					this.pop();
 					this.push(node);
-					node.left.swapWithParent();
-					if(node == this.root)
-						this.root = node.left;
 					this.shiftNodeDown(node);
 				}
 			}
