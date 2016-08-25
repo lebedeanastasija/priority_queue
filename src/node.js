@@ -63,21 +63,54 @@ class Node {
 
             if(parent.parent != null) {
 				var parentOfParent = parent.parent;
+
+				var parentLeftChild = false;
+
+				if(parentOfParent.left == parent)
+					parentLeftChild = true;
+
+				var secondParentParentChild;
+
+				if(parentLeftChild)
+					secondParentParentChild = parentOfParent.right;
+				else
+					secondParentParentChild = parentOgParent.left;
+
                 parent.remove();
-                parentOfParent.appendChild(this);
+                secondParentParentChild.remove();
+
+	            if(parentLeftChild){
+	            	parentOfParent.appendChild(this);
+	            	parentOfParent.appendChild(secondParentParentChild);
+	            }
+	            else{
+	            	parentOfParent.appendChild(secondParentParentChild);
+	            	parentOfParent.appendChild(this);
+	            }
 			}
 
             if(secondParentChild != null){
             	secondParentChild.remove();            	
             }
 
+            var left = this.left;
+            var right = this.right;
+            if(left != null)
+            	left.remove();
+            if(right != null)
+            	right.remove();
+
             if(leftChild){
 				this.appendChild(parent);
 				this.appendChild(secondParentChild);
+				this.left.appendChild(left);
+				this.left.appendChild(right);
 			}
 			else {
 				this.appendChild(secondParentChild);
 				this.appendChild(parent);
+				this.right.appendChild(left);
+				this.right.appendChild(right);
 			}
 		}
 	}
