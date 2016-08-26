@@ -119,8 +119,9 @@ class Node {
 				this.appendChild(parent);
 				if(left != null){
 					this.right.appendChild(left);
-					if(right != null)
+					if(right != null) {
 						this.right.appendChild(right);
+					}
 				}
 			}			
 		}
