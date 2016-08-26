@@ -10,11 +10,11 @@ class PriorityQueue {
 	}
 
 	push(data, priority) {
-		if(this.maxSize > this.size()) {
+		if(this.size() < this.maxSize) {
 			this.heap.push(data, priority);
 		}
 		else 
-			throw "Queue is full";
+			throw new Error("Queue is full!");
 	}
 
 	shift() {
@@ -22,7 +22,7 @@ class PriorityQueue {
 			return this.heap.pop();
 		}
 		else
-			throw "Queue is empty";
+			throw new Error("Queue is empty!");
 	}
 
 	size() {
