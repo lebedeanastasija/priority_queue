@@ -74,10 +74,11 @@ class Node {
 				if(parentLeftChild)
 					secondParentParentChild = parentOfParent.right;
 				else
-					secondParentParentChild = parentOgParent.left;
+					secondParentParentChild = parentOfParent.left;
 
                 parent.remove();
-                secondParentParentChild.remove();
+                if(secondParentChild != null)
+                	secondParentParentChild.remove();
 
 	            if(parentLeftChild){
 	            	parentOfParent.appendChild(this);
