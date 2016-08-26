@@ -60,10 +60,10 @@ class Node {
 				secondParentChild = parent.left;
 
             this.remove();       
-
+            
             if(parent.parent != null) {
 				var parentOfParent = parent.parent;
-
+				
 				var parentLeftChild = false;
 
 				if(parentOfParent.left == parent)
@@ -75,19 +75,22 @@ class Node {
 					secondParentParentChild = parentOfParent.right;
 				else
 					secondParentParentChild = parentOfParent.left;
-
-                parent.remove();
-                if(secondParentChild != null)
+				
+                parent.remove();              
+                if(secondParentParentChild != null)
                 	secondParentParentChild.remove();
-
+               
 	            if(parentLeftChild){
 	            	parentOfParent.appendChild(this);
-	            	parentOfParent.appendChild(secondParentParentChild);
+	            	if(secondParentParentChild != null) {
+	            		parentOfParent.appendChild(secondParentParentChild);
+	            	}
 	            }
 	            else{
 	            	parentOfParent.appendChild(secondParentParentChild);
 	            	parentOfParent.appendChild(this);
 	            }
+	            
 			}
 
             if(secondParentChild != null){
@@ -103,7 +106,8 @@ class Node {
 
             if(leftChild){
 				this.appendChild(parent);
-				this.appendChild(secondParentChild);
+				if(secondParentChild != null)
+					this.appendChild(secondParentChild);
 				if(left != null){
 					this.left.appendChild(left);
 					if(right != null) 
@@ -118,7 +122,7 @@ class Node {
 					if(right != null)
 						this.right.appendChild(right);
 				}
-			}
+			}			
 		}
 	}
 }
