@@ -110,8 +110,9 @@ class Node {
 					this.appendChild(secondParentChild);
 				if(left != null){
 					this.left.appendChild(left);
-					if(right != null) 
+					if(right != null) {
 						this.left.appendChild(right);
+					}
 				}
 			}
 			else {
