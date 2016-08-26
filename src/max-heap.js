@@ -78,7 +78,27 @@ class MaxHeap {
 	}
 
 	size() {
-		return this.parentNodes.length;
+		var result = 0;
+		if (this.parentNodes.length > 0){
+	        var i = this.parentNodes.length - 1;
+	        var parentOfLastNode = this.parentNodes[i].parent;
+	        if(parentOfLastNode != null){
+		        while((i != this.parentNodes.indexOf(parentOfLastNode)) && (i > 0)){
+		        	result++;
+		        	i--;
+		        }
+		        if(this.parentNodes.indexOf(parentOfLastNode) > -1){
+		        	result = result * 2;
+		        }
+		        else {
+		        	result = result * 2 + 1;
+		        }
+		    }
+		    else {
+		    	result = 1;
+		    }
+        }
+		return result;
 	}
 
 	isEmpty() {
